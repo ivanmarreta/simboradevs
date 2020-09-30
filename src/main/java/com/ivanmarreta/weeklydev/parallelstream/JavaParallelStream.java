@@ -9,14 +9,16 @@ public class JavaParallelStream {
         List<Integer> numbers = Arrays.asList(1,2,3,4,5,6,7,8,9,10);
 
         //find total of triple of odd numbers
-        int total = 0;
+        new Thread(() -> {
+            int total = 0;
 
-        for (int i : numbers) {
-            if(i % 2 != 0){
-                total += i*3;
+            for (int i : numbers) {
+                if(i % 2 != 0){
+                    total += i*3;
+                }
             }
-        }
 
-        System.out.println(total);
+            System.out.println(total);
+        }).start();
     }
 }
