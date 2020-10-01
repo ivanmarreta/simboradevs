@@ -2,29 +2,45 @@ package com.ivanmarreta.weeklydev.parallelstream;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
+import java.util.stream.Stream;
 
 public class JavaParallelStream {
 
-    public static void main(String[] args) throws ExecutionException, InterruptedException {
+    public static void main(String[] args) {
+        //Java Streams
+
         List<Integer> numbers = Arrays.asList(1,2,3,4,5,6,7,8,9,10);
 
-        //find total of triple of odd numbers
-        CompletableFuture<Integer> completableFuture = CompletableFuture.supplyAsync(() -> {
-            int total = 0;
+        use(numbers.parallelStream());
+    }
 
-            for (int i : numbers) {
-                if(i % 2 != 0){
-                    total += i*3;
-                }
-            }
+    public static void use(Stream<Integer> stream){
+        stream
+            .filter(i -> filter(i))
+            .map(i -> transform(i))
+            .forEachOrdered(i -> printIt(i));
+    }
 
-            return total;
-        });
+    public static boolean filter(int number) {
+        System.out.println("filter: " + number + " -- " + Thread.currentThread());
+        return true;
+    }
 
-        Integer total = completableFuture.get();
+    public static int transform(int number) {
+        System.out.println("map: " + number + " -- " + Thread.currentThread());
+        sleep(1000);
+        return 1 * number;
+    }
 
-        System.out.println(total);
+    public static void printIt(int number){
+        System.out.println("print: " + number + " -- " + Thread.currentThread());
+    }
+
+    public static void sleep(int milliseconds){
+        try {
+            Thread.sleep(milliseconds);
+        } catch (InterruptedException e) {
+            System.out.println("ERROR");
+        }
     }
 }
