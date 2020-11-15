@@ -1,4 +1,4 @@
-# weeklydev
+# SimboraDevs
 
 Welcome!
 This repo is from a channel to share knowledge with friends and several collaborators.
